@@ -6,6 +6,8 @@ from ryu.controller.handler import set_ev_cls
 from ryu.ofproto import ofproto_v1_3
 from ryu.lib.mac import haddr_to_bin
 from ryu.lib.packet import packet
+from ryu.lib.packet import arp
+from ryu.lib.packet import ipv4
 from ryu.lib.packet import ethernet
 from ryu.lib.packet import ether_types
 from ryu.lib import mac
@@ -15,6 +17,8 @@ from ryu.topology.api import get_switch, get_link
 from ryu.app.wsgi import ControllerBase
 from ryu.topology import event, switches
 from collections import defaultdict
+import time
+
 
 
 topo = {
@@ -70,8 +74,8 @@ def get_path (src,dst,first_port,final_port):
  
   distance[src]=0
   Q=set(switches)
-  print("Q=", Q)
-  print("distance ", distance)
+#   print("Q=", Q)
+#   print("distance ", distance)
    
   while len(Q)>0:
     u = minimum_distance(distance, Q)
@@ -81,7 +85,7 @@ def get_path (src,dst,first_port,final_port):
       if adjacency[u][p]!=None:
         w = 1  # 1 for hop, topo[u][p] for distance, 1/topo[u][p] for bandwidth
         if distance[u] + w < distance[p]:
-          print(u,p)
+        #   print(u,p)
           distance[p] = distance[u] + w
           previous[p] = u
  
@@ -127,6 +131,7 @@ class ProjectController(app_manager.RyuApp):
         self.port_stats = {}
         self.datapaths = {}
         self.monitor_thread = hub.spawn(self._monitor)
+        self.k={}
 
     def _monitor(self):
         while True:
@@ -166,17 +171,17 @@ class ProjectController(app_manager.RyuApp):
     def _port_stats_reply_handler(self, ev):
         body = ev.msg.body
 
-        self.logger.info('datapath port '
-            'rx-pkts rx-bytes rx-error '
-            'tx-pkts tx-bytes tx-error')
-        self.logger.info('---------------- -------- '
-            '-------- -------- -------- '
-            '-------- -------- --------')
-        for stat in sorted(body, key=attrgetter('port_no')):
-            self.logger.info('%016x %8x %8d %8d %8d %8d %8d %8d',
-                ev.msg.datapath.id, stat.port_no,
-                stat.rx_packets, stat.rx_bytes, stat.rx_errors,
-                stat.tx_packets, stat.tx_bytes, stat.tx_errors)
+        # self.logger.info('datapath port '
+        #     'rx-pkts rx-bytes rx-error '
+        #     'tx-pkts tx-bytes tx-error')
+        # self.logger.info('---------------- -------- '
+        #     '-------- -------- -------- '
+        #     '-------- -------- --------')
+        # for stat in sorted(body, key=attrgetter('port_no')):
+        #     self.logger.info('%016x %8x %8d %8d %8d %8d %8d %8d',
+        #         ev.msg.datapath.id, stat.port_no,
+        #         stat.rx_packets, stat.rx_bytes, stat.rx_errors,
+        #         stat.tx_packets, stat.tx_bytes, stat.tx_errors)
 
 
         for stat in sorted(body, key=attrgetter('port_no')):
@@ -215,7 +220,9 @@ class ProjectController(app_manager.RyuApp):
  
     def add_flow(self, datapath, in_port, dst, actions):
         ofproto = datapath.ofproto
-        parser = datapath.ofproto_parser      
+        print("ofproto: ",ofproto)
+        parser = datapath.ofproto_parser   
+        print("parser: ",parser)   
         match = datapath.ofproto_parser.OFPMatch(
             in_port=in_port, eth_dst=dst)
         
@@ -270,33 +277,77 @@ class ProjectController(app_manager.RyuApp):
  
         pkt = packet.Packet(msg.data)
         eth = pkt.get_protocol(ethernet.ethernet)
+        parp = pkt.get_protocol(arp.arp)
+        pkt_ipv4 = pkt.get_protocol(ipv4.ipv4)
         #print "eth.ethertype=", eth.ethertype
  
-        #avodi broadcast from LLDP
+        #avoid broadcast from LLDP
         if eth.ethertype==35020:
           return
- 
+
         dst = eth.dst
         src = eth.src
+        # src_ip = parp.src_ip
+        self.k.setdefault(src,{})
         dpid = datapath.id
-        self.mac_to_port.setdefault(dpid, {})
- 
+        # self.mac_to_port.setdefault(dpid, {})
+        # print(self.mac_to_port)
+        # print(src)
+        print(mymac)
+
+        if parp:
+          dst_ip = parp.dst_ip
+          if src not in self.k.keys():
+            self.k[src][dst_ip]=0
+
+          if (src in self.k.keys() and dst_ip not in self.k[src].keys()):
+            self.k[src][dst_ip]=0
+        elif ipv4:
+          dst_ipv4 = pkt_ipv4.dst
+          print(dst_ipv4)
+          self.k[src][dst_ipv4]=1000
+        
+
+        # self.logger.info("packet-in %s" % (pkt,))
+        # self.logger.info("packet in %s %s %s %s", dpid, src, dst, in_port)
+        # print(mymac)
         if src not in mymac.keys():
             mymac[src]=( dpid,  in_port)
-            #print "mymac=", mymac
- 
+            print ("mymac=", mymac[src])
+
+        
+        # SOSTOS
+        # print(dst)
+        # print(self.k)
         if dst in mymac.keys():
+            print("hey")
             p = get_path(mymac[src][0], mymac[dst][0], mymac[src][1], mymac[dst][1])
             print(p)
             self.install_path(p, ev, src, dst)
             out_port = p[0][2]
+            actions = [parser.OFPActionOutput(out_port)]
+            print(out_port)
         else:
-            out_port = ofproto.OFPP_FLOOD
+            # out_port = in_port
+            if self.k[src][dst_ip]<1000:
+              out_port = ofproto.OFPP_FLOOD
+              self.k[src][dst_ip]+=1
+              actions = [parser.OFPActionOutput(out_port)]
+            else:
+              print('throw')
+              out_port = ofproto.OFPP_FLOOD
+              actions = ''
+            # actions = ''
+            # out_port = ''
+            # out_port = ofproto.OFPP_FLOOD
+            # actions = [parser.OFPActionOutput(out_port)]
+
        
-        actions = [parser.OFPActionOutput(out_port)]
+        # actions = [parser.OFPActionOutput(out_port)]
  
         # install a flow to avoid packet_in next time
         if out_port != ofproto.OFPP_FLOOD:
+            # match = parser.OFPMatch(in_port=in_port, eth_src=src, eth_dst=dst)
             match = parser.OFPMatch(in_port=in_port, eth_src=src, eth_dst=dst)
        
         data=None
