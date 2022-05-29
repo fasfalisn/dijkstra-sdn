@@ -19,8 +19,6 @@ from ryu.topology import event, switches
 from collections import defaultdict
 import time
 
-
-
 topo = {
             1 : { 1: 0, 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : 10, 6: float('inf'),7: 20, 8 : float('inf'), 9 : 30, 10 : float('inf'), 11: 40, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
             2 : { 1: float('inf'), 2: 0, 3: float('inf'), 4: float('inf'), 5 : 20, 6: float('inf'),7: 10, 8 : float('inf'), 9 : 20, 10 : float('inf'), 11: 30, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
@@ -42,6 +40,29 @@ topo = {
             18 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : 20, 10 : 10, 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : 0, 19 : float('inf'), 20 : float('inf')},
             19 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 10, 12: 20, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : 0, 20 : float('inf')},
             20: { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 20, 12: 10, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : 0},
+        }
+
+topobw = {
+            1 : { 1: 0, 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : 5, 6: float('inf'),7: 5, 8 : float('inf'), 9 : 5, 10 : float('inf'), 11: 5, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            2 : { 1: float('inf'), 2: 0, 3: float('inf'), 4: float('inf'), 5 : 10, 6: float('inf'),7: 10, 8 : float('inf'), 9 : 10, 10 : float('inf'), 11: 10, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            3 : { 1: float('inf'), 2: float('inf'), 3: 0, 4: float('inf'), 5 : float('inf'), 6: 5,7: float('inf'), 8 : 5, 9 : float('inf'), 10 : 5, 11: float('inf'), 12: 5, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            4 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: 0, 5 : float('inf'), 6: 10,7: float('inf'), 8 : 10, 9 : float('inf'), 10 : 10, 11: float('inf'), 12: 10, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            5 : { 1: 5, 2: 10, 3: float('inf'), 4: float('inf'), 5 : 0, 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: 2, 14: 2, 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            6 : { 1: float('inf'), 2: float('inf'), 3: 5, 4: 10, 5 : float('inf'), 6: 0,7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: 3, 14: 3, 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            7 : { 1: 5, 2: 10, 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: 0, 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : 2, 16: 2, 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            8 : { 1: float('inf'), 2: float('inf'), 3: 5, 4: 10, 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : 0, 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : 3, 16: 3, 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            9 : { 1: 5, 2: 10, 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : 0, 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: 2, 18 : 2, 19 : float('inf'), 20 : float('inf')},
+            10 : { 1: float('inf'), 2: float('inf'), 3: 5, 4: 10, 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : 0, 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: 3, 18 : 3, 19 : float('inf'), 20 : float('inf')},
+            11 : { 1: 5, 2: 10, 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 0, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : 2, 20 : 2},
+            12 : { 1: float('inf'), 2: float('inf'), 3: 5, 4: 10, 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: 0, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : 3, 20 : 3},
+            13 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : 2, 6: 3,7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: 0, 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            14 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : 2, 6: 3,7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: 0, 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            15 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: 2, 8 : 3, 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : 0, 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            16 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: 2, 8 : 3, 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: 0, 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            17 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : 2, 10 : 3, 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: 0, 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            18 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : 2, 10 : 3, 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : 0, 19 : float('inf'), 20 : float('inf')},
+            19 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 2, 12: 3, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : 0, 20 : float('inf')},
+            20 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 2, 12: 3, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : 0},
         }
 
 #Πίνακας switches
@@ -74,8 +95,6 @@ def get_path (src,dst,first_port,final_port):
  
   distance[src]=0
   Q=set(switches)
-#   print("Q=", Q)
-#   print("distance ", distance)
    
   while len(Q)>0:
     u = minimum_distance(distance, Q)
@@ -83,9 +102,8 @@ def get_path (src,dst,first_port,final_port):
    
     for p in switches:
       if adjacency[u][p]!=None:
-        w = 1  # 1 for hop, topo[u][p] for distance, 1/topo[u][p] for bandwidth
+        w = 1/topobw[u][p]  # 1 for hop, topo[u][p] for distance, 1/topobw[u][p] for bandwidth
         if distance[u] + w < distance[p]:
-        #   print(u,p)
           distance[p] = distance[u] + w
           previous[p] = u
  
@@ -132,6 +150,7 @@ class ProjectController(app_manager.RyuApp):
         self.datapaths = {}
         self.monitor_thread = hub.spawn(self._monitor)
         self.k={}
+        self.countr=0
 
     def _monitor(self):
         while True:
@@ -152,7 +171,7 @@ class ProjectController(app_manager.RyuApp):
     
     def _get_speed(self, now, pre, period):
         if period:
-            return (now - pre) / (period)
+            return (now - pre) / (period*8000000)
         else:
             return 0
 
@@ -170,6 +189,7 @@ class ProjectController(app_manager.RyuApp):
     @set_ev_cls(ofp_event.EventOFPPortStatsReply, MAIN_DISPATCHER)
     def _port_stats_reply_handler(self, ev):
         body = ev.msg.body
+        self.countr+=1
 
         # self.logger.info('datapath port '
         #     'rx-pkts rx-bytes rx-error '
@@ -183,7 +203,12 @@ class ProjectController(app_manager.RyuApp):
         #         stat.rx_packets, stat.rx_bytes, stat.rx_errors,
         #         stat.tx_packets, stat.tx_bytes, stat.tx_errors)
 
-
+        # for key, value in sorted(self.port_speed.items()):
+        #   print(self.port_speed[(1)], ' : ', value)
+        # print('\n Speed:\n', self.port_speed)
+        
+          
+        
         for stat in sorted(body, key=attrgetter('port_no')):
             if stat.port_no != ofproto_v1_3.OFPP_LOCAL:
                 key = (ev.msg.datapath.id, stat.port_no)
@@ -208,21 +233,40 @@ class ProjectController(app_manager.RyuApp):
                     pre, period)
 
                 self._save_stats(self.port_speed, key, speed, self.state_len)
-                # print ('\n Speed:\n', self.port_speed)
+      
+        if(self.countr%20==0):
+          global topobw
+          topobw = {
+            1 : { 1: 0, 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : (5- self.port_speed.get((1,1))[-1]), 6: float('inf'),7: (5- self.port_speed.get((1,2))[-1]), 8 : float('inf'), 9 : (5- self.port_speed.get((1,3))[-1]), 10 : float('inf'), 11: (5- self.port_speed.get((1,4))[-1]), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            2 : { 1: float('inf'), 2: 0, 3: float('inf'), 4: float('inf'), 5 : (10- self.port_speed.get((2,1))[-1]), 6: float('inf'),7: (10- self.port_speed.get((2,1))[-1]), 8 : float('inf'), 9 : (10- self.port_speed.get((2,1))[-1]), 10 : float('inf'), 11: (10- self.port_speed.get((2,1))[-1]), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            3 : { 1: float('inf'), 2: float('inf'), 3: 0, 4: float('inf'), 5 : float('inf'), 6: (5- self.port_speed.get((3,1))[-1]),7: float('inf'), 8 : (5- self.port_speed.get((3,1))[-1]), 9 : float('inf'), 10 : (5- self.port_speed.get((3,1))[-1]), 11: float('inf'), 12: (5- self.port_speed.get((3,1))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            4 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: 0, 5 : float('inf'), 6: (10- self.port_speed.get((4,1))[-1]),7: float('inf'), 8 : (10- self.port_speed.get((4,1))[-1]), 9 : float('inf'), 10 : (10- self.port_speed.get((4,1))[-1]), 11: float('inf'), 12: (10- self.port_speed.get((4,1))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            5 : { 1: (5- self.port_speed.get((5,1))[-1]), 2: (10- self.port_speed.get((5,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : 0, 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: (2- self.port_speed.get((5,3))[-1]), 14: (2- self.port_speed.get((5,4))[-1]), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            6 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((6,1))[-1]), 4: (10- self.port_speed.get((6,2))[-1]), 5 : float('inf'), 6: 0,7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: (3- self.port_speed.get((6,3))[-1]), 14: (3- self.port_speed.get((6,4))[-1]), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            7 : { 1: (5- self.port_speed.get((7,1))[-1]), 2: (10- self.port_speed.get((7,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: 0, 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : (2- self.port_speed.get((7,3))[-1]), 16: (2- self.port_speed.get((7,4))[-1]), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            8 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((8,1))[-1]), 4: (10- self.port_speed.get((8,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : 0, 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : (3- self.port_speed.get((8,3))[-1]), 16: (3- self.port_speed.get((8,4))[-1]), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            9 : { 1: (5- self.port_speed.get((9,1))[-1]), 2: (10- self.port_speed.get((9,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : 0, 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: (2- self.port_speed.get((9,3))[-1]), 18 : (2- self.port_speed.get((9,4))[-1]), 19 : float('inf'), 20 : float('inf')},
+            10 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((10,1))[-1]), 4: (10- self.port_speed.get((10,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : 0, 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: (3- self.port_speed.get((10,3))[-1]), 18 : (3- self.port_speed.get((10,4))[-1]), 19 : float('inf'), 20 : float('inf')},
+            11 : { 1: (5- self.port_speed.get((11,1))[-1]), 2: (10- self.port_speed.get((11,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 0, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : (2- self.port_speed.get((11,3))[-1]), 20 : (2- self.port_speed.get((11,4))[-1])},
+            12 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((12,1))[-1]), 4: (10- self.port_speed.get((12,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: 0, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : (3- self.port_speed.get((12,3))[-1]), 20 : (3- self.port_speed.get((12,4))[-1])},
+            13 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : (2- self.port_speed.get((13,1))[-1]), 6: (3- self.port_speed.get((13,2))[-1]),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: 0, 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            14 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : (2- self.port_speed.get((14,1))[-1]), 6: (3- self.port_speed.get((14,2))[-1]),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: 0, 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            15 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: (2- self.port_speed.get((15,1))[-1]), 8 : (3- self.port_speed.get((15,2))[-1]), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : 0, 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            16 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: (2- self.port_speed.get((16,1))[-1]), 8 : (3- self.port_speed.get((16,2))[-1]), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: 0, 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            17 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : (2- self.port_speed.get((17,1))[-1]), 10 : (3- self.port_speed.get((17,2))[-1]), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: 0, 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            18 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : (2- self.port_speed.get((18,1))[-1]), 10 : (3- self.port_speed.get((18,2))[-1]), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : 0, 19 : float('inf'), 20 : float('inf')},
+            19 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: (2- self.port_speed.get((19,1))[-1]), 12: (3- self.port_speed.get((19,2))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : 0, 20 : float('inf')},
+            20 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: (2- self.port_speed.get((20,1))[-1]), 12: (3- self.port_speed.get((20,2))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : 0},
+          
+          }
+          # print(topobw)
 
-                # for key, value in sorted(self.port_speed.items()):
-                #     print(key, ' : ', value)
-
-  
-    # Handy function that lists all attributes in the given object
-    def ls(self,obj):
-        print("\n".join([x for x in dir(obj) if x[0] != "_"]))
+        
+                
  
     def add_flow(self, datapath, in_port, dst, actions):
         ofproto = datapath.ofproto
-        print("ofproto: ",ofproto)
-        parser = datapath.ofproto_parser   
-        print("parser: ",parser)   
+        parser = datapath.ofproto_parser
         match = datapath.ofproto_parser.OFPMatch(
             in_port=in_port, eth_dst=dst)
         
@@ -248,7 +292,7 @@ class ProjectController(app_manager.RyuApp):
         actions=[parser.OFPActionOutput(out_port)]
         datapath=self.datapath_list[int(sw)-1]
         inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS , actions)]
-        mod = datapath.ofproto_parser.OFPFlowMod( datapath=datapath, match=match, idle_timeout=0, hard_timeout=0,priority=1, instructions=inst)
+        mod = datapath.ofproto_parser.OFPFlowMod( datapath=datapath, match=match, idle_timeout=10, hard_timeout=0,priority=1, instructions=inst)
         datapath.send_msg(mod)
  
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures , CONFIG_DISPATCHER)
@@ -279,7 +323,6 @@ class ProjectController(app_manager.RyuApp):
         eth = pkt.get_protocol(ethernet.ethernet)
         parp = pkt.get_protocol(arp.arp)
         pkt_ipv4 = pkt.get_protocol(ipv4.ipv4)
-        #print "eth.ethertype=", eth.ethertype
  
         #avoid broadcast from LLDP
         if eth.ethertype==35020:
@@ -290,10 +333,6 @@ class ProjectController(app_manager.RyuApp):
         # src_ip = parp.src_ip
         self.k.setdefault(src,{})
         dpid = datapath.id
-        # self.mac_to_port.setdefault(dpid, {})
-        # print(self.mac_to_port)
-        # print(src)
-        print(mymac)
 
         if parp:
           dst_ip = parp.dst_ip
@@ -304,50 +343,34 @@ class ProjectController(app_manager.RyuApp):
             self.k[src][dst_ip]=0
         elif ipv4:
           dst_ipv4 = pkt_ipv4.dst
-          print(dst_ipv4)
           self.k[src][dst_ipv4]=1000
         
 
         # self.logger.info("packet-in %s" % (pkt,))
-        # self.logger.info("packet in %s %s %s %s", dpid, src, dst, in_port)
-        # print(mymac)
         if src not in mymac.keys():
             mymac[src]=( dpid,  in_port)
-            print ("mymac=", mymac[src])
 
-        
-        # SOSTOS
-        # print(dst)
-        # print(self.k)
         if dst in mymac.keys():
-            print("hey")
             p = get_path(mymac[src][0], mymac[dst][0], mymac[src][1], mymac[dst][1])
-            print(p)
+            # print(p)
             self.install_path(p, ev, src, dst)
             out_port = p[0][2]
             actions = [parser.OFPActionOutput(out_port)]
-            print(out_port)
+            # print(out_port)
         else:
             # out_port = in_port
+            out_port = ofproto.OFPP_FLOOD
             if self.k[src][dst_ip]<1000:
-              out_port = ofproto.OFPP_FLOOD
               self.k[src][dst_ip]+=1
               actions = [parser.OFPActionOutput(out_port)]
             else:
-              print('throw')
-              out_port = ofproto.OFPP_FLOOD
               actions = ''
-            # actions = ''
-            # out_port = ''
-            # out_port = ofproto.OFPP_FLOOD
-            # actions = [parser.OFPActionOutput(out_port)]
 
        
         # actions = [parser.OFPActionOutput(out_port)]
  
         # install a flow to avoid packet_in next time
         if out_port != ofproto.OFPP_FLOOD:
-            # match = parser.OFPMatch(in_port=in_port, eth_src=src, eth_dst=dst)
             match = parser.OFPMatch(in_port=in_port, eth_src=src, eth_dst=dst)
        
         data=None
