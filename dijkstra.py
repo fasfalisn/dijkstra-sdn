@@ -171,7 +171,7 @@ class ProjectController(app_manager.RyuApp):
     
     def _get_speed(self, now, pre, period):
         if period:
-            return (now - pre) / (period*8000000)
+            return (((now - pre)*8) / (period*1000000))
         else:
             return 0
 
@@ -237,49 +237,32 @@ class ProjectController(app_manager.RyuApp):
         if(self.countr%20==0):
           global topobw
           topobw = {
-            1 : { 1: 0, 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : (5- self.port_speed.get((1,1))[-1]), 6: float('inf'),7: (5- self.port_speed.get((1,2))[-1]), 8 : float('inf'), 9 : (5- self.port_speed.get((1,3))[-1]), 10 : float('inf'), 11: (5- self.port_speed.get((1,4))[-1]), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            2 : { 1: float('inf'), 2: 0, 3: float('inf'), 4: float('inf'), 5 : (10- self.port_speed.get((2,1))[-1]), 6: float('inf'),7: (10- self.port_speed.get((2,1))[-1]), 8 : float('inf'), 9 : (10- self.port_speed.get((2,1))[-1]), 10 : float('inf'), 11: (10- self.port_speed.get((2,1))[-1]), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            3 : { 1: float('inf'), 2: float('inf'), 3: 0, 4: float('inf'), 5 : float('inf'), 6: (5- self.port_speed.get((3,1))[-1]),7: float('inf'), 8 : (5- self.port_speed.get((3,1))[-1]), 9 : float('inf'), 10 : (5- self.port_speed.get((3,1))[-1]), 11: float('inf'), 12: (5- self.port_speed.get((3,1))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            4 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: 0, 5 : float('inf'), 6: (10- self.port_speed.get((4,1))[-1]),7: float('inf'), 8 : (10- self.port_speed.get((4,1))[-1]), 9 : float('inf'), 10 : (10- self.port_speed.get((4,1))[-1]), 11: float('inf'), 12: (10- self.port_speed.get((4,1))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            5 : { 1: (5- self.port_speed.get((5,1))[-1]), 2: (10- self.port_speed.get((5,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : 0, 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: (2- self.port_speed.get((5,3))[-1]), 14: (2- self.port_speed.get((5,4))[-1]), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            6 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((6,1))[-1]), 4: (10- self.port_speed.get((6,2))[-1]), 5 : float('inf'), 6: 0,7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: (3- self.port_speed.get((6,3))[-1]), 14: (3- self.port_speed.get((6,4))[-1]), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            7 : { 1: (5- self.port_speed.get((7,1))[-1]), 2: (10- self.port_speed.get((7,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: 0, 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : (2- self.port_speed.get((7,3))[-1]), 16: (2- self.port_speed.get((7,4))[-1]), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            8 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((8,1))[-1]), 4: (10- self.port_speed.get((8,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : 0, 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : (3- self.port_speed.get((8,3))[-1]), 16: (3- self.port_speed.get((8,4))[-1]), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            9 : { 1: (5- self.port_speed.get((9,1))[-1]), 2: (10- self.port_speed.get((9,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : 0, 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: (2- self.port_speed.get((9,3))[-1]), 18 : (2- self.port_speed.get((9,4))[-1]), 19 : float('inf'), 20 : float('inf')},
-            10 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((10,1))[-1]), 4: (10- self.port_speed.get((10,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : 0, 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: (3- self.port_speed.get((10,3))[-1]), 18 : (3- self.port_speed.get((10,4))[-1]), 19 : float('inf'), 20 : float('inf')},
-            11 : { 1: (5- self.port_speed.get((11,1))[-1]), 2: (10- self.port_speed.get((11,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 0, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : (2- self.port_speed.get((11,3))[-1]), 20 : (2- self.port_speed.get((11,4))[-1])},
-            12 : { 1: float('inf'), 2: float('inf'), 3: (5- self.port_speed.get((12,1))[-1]), 4: (10- self.port_speed.get((12,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: 0, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : (3- self.port_speed.get((12,3))[-1]), 20 : (3- self.port_speed.get((12,4))[-1])},
-            13 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : (2- self.port_speed.get((13,1))[-1]), 6: (3- self.port_speed.get((13,2))[-1]),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: 0, 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            14 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : (2- self.port_speed.get((14,1))[-1]), 6: (3- self.port_speed.get((14,2))[-1]),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: 0, 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            15 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: (2- self.port_speed.get((15,1))[-1]), 8 : (3- self.port_speed.get((15,2))[-1]), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : 0, 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            16 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: (2- self.port_speed.get((16,1))[-1]), 8 : (3- self.port_speed.get((16,2))[-1]), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: 0, 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            17 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : (2- self.port_speed.get((17,1))[-1]), 10 : (3- self.port_speed.get((17,2))[-1]), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: 0, 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
-            18 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : (2- self.port_speed.get((18,1))[-1]), 10 : (3- self.port_speed.get((18,2))[-1]), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : 0, 19 : float('inf'), 20 : float('inf')},
-            19 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: (2- self.port_speed.get((19,1))[-1]), 12: (3- self.port_speed.get((19,2))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : 0, 20 : float('inf')},
-            20 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: (2- self.port_speed.get((20,1))[-1]), 12: (3- self.port_speed.get((20,2))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : 0},
+            1 : { 1: 0, 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : abs(5- self.port_speed.get((1,1))[-1]), 6: float('inf'),7: abs(5- self.port_speed.get((1,2))[-1]), 8 : float('inf'), 9 : abs(5- self.port_speed.get((1,3))[-1]), 10 : float('inf'), 11: abs(5- self.port_speed.get((1,4))[-1]), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            2 : { 1: float('inf'), 2: 0, 3: float('inf'), 4: float('inf'), 5 : abs(10- self.port_speed.get((2,1))[-1]), 6: float('inf'),7: abs(10- self.port_speed.get((2,1))[-1]), 8 : float('inf'), 9 : abs(10- self.port_speed.get((2,1))[-1]), 10 : float('inf'), 11: abs(10- self.port_speed.get((2,1))[-1]), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            3 : { 1: float('inf'), 2: float('inf'), 3: 0, 4: float('inf'), 5 : float('inf'), 6: abs(5- self.port_speed.get((3,1))[-1]),7: float('inf'), 8 : abs(5- self.port_speed.get((3,1))[-1]), 9 : float('inf'), 10 : abs(5- self.port_speed.get((3,1))[-1]), 11: float('inf'), 12: abs(5- self.port_speed.get((3,1))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            4 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: 0, 5 : float('inf'), 6: abs(10- self.port_speed.get((4,1))[-1]),7: float('inf'), 8 : abs(10- self.port_speed.get((4,1))[-1]), 9 : float('inf'), 10 : abs(10- self.port_speed.get((4,1))[-1]), 11: float('inf'), 12: abs(10- self.port_speed.get((4,1))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            5 : { 1: abs(5- self.port_speed.get((5,1))[-1]), 2: abs(10- self.port_speed.get((5,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : 0, 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: abs(2- self.port_speed.get((5,3))[-1]), 14: abs(2- self.port_speed.get((5,4))[-1]), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            6 : { 1: float('inf'), 2: float('inf'), 3: abs(5- self.port_speed.get((6,1))[-1]), 4: abs(10- self.port_speed.get((6,2))[-1]), 5 : float('inf'), 6: 0,7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: abs(3- self.port_speed.get((6,3))[-1]), 14: abs(3- self.port_speed.get((6,4))[-1]), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            7 : { 1: abs(5- self.port_speed.get((7,1))[-1]), 2: abs(10- self.port_speed.get((7,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: 0, 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : abs(2- self.port_speed.get((7,3))[-1]), 16: abs(2- self.port_speed.get((7,4))[-1]), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            8 : { 1: float('inf'), 2: float('inf'), 3: abs(5- self.port_speed.get((8,1))[-1]), 4: abs(10- self.port_speed.get((8,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : 0, 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : abs(3- self.port_speed.get((8,3))[-1]), 16: abs(3- self.port_speed.get((8,4))[-1]), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            9 : { 1: abs(5- self.port_speed.get((9,1))[-1]), 2: abs(10- self.port_speed.get((9,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : 0, 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: abs(2- self.port_speed.get((9,3))[-1]), 18 : abs(2- self.port_speed.get((9,4))[-1]), 19 : float('inf'), 20 : float('inf')},
+            10 : { 1: float('inf'), 2: float('inf'), 3: abs(5- self.port_speed.get((10,1))[-1]), 4: abs(10- self.port_speed.get((10,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : 0, 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: abs(3- self.port_speed.get((10,3))[-1]), 18 : abs(3- self.port_speed.get((10,4))[-1]), 19 : float('inf'), 20 : float('inf')},
+            11 : { 1: abs(5- self.port_speed.get((11,1))[-1]), 2: abs(10- self.port_speed.get((11,2))[-1]), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: 0, 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : abs(2- self.port_speed.get((11,3))[-1]), 20 : abs(2- self.port_speed.get((11,4))[-1])},
+            12 : { 1: float('inf'), 2: float('inf'), 3: abs(5- self.port_speed.get((12,1))[-1]), 4: abs(10- self.port_speed.get((12,2))[-1]), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: 0, 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : abs(3- self.port_speed.get((12,3))[-1]), 20 : abs(3- self.port_speed.get((12,4))[-1])},
+            13 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : abs(2- self.port_speed.get((13,1))[-1]), 6: abs(3- self.port_speed.get((13,2))[-1]),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: 0, 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            14 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : abs(2- self.port_speed.get((14,1))[-1]), 6: abs(3- self.port_speed.get((14,2))[-1]),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: 0, 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            15 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: abs(2- self.port_speed.get((15,1))[-1]), 8 : abs(3- self.port_speed.get((15,2))[-1]), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : 0, 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            16 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: abs(2- self.port_speed.get((16,1))[-1]), 8 : abs(3- self.port_speed.get((16,2))[-1]), 9 : float('inf'), 10 : float('inf'), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: 0, 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            17 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : abs(2- self.port_speed.get((17,1))[-1]), 10 : abs(3- self.port_speed.get((17,2))[-1]), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: 0, 18 : float('inf'), 19 : float('inf'), 20 : float('inf')},
+            18 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : abs(2- self.port_speed.get((18,1))[-1]), 10 : abs(3- self.port_speed.get((18,2))[-1]), 11: float('inf'), 12: float('inf'), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : 0, 19 : float('inf'), 20 : float('inf')},
+            19 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: abs(2- self.port_speed.get((19,1))[-1]), 12: abs(3- self.port_speed.get((19,2))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : 0, 20 : float('inf')},
+            20 : { 1: float('inf'), 2: float('inf'), 3: float('inf'), 4: float('inf'), 5 : float('inf'), 6: float('inf'),7: float('inf'), 8 : float('inf'), 9 : float('inf'), 10 : float('inf'), 11: abs(2- self.port_speed.get((20,1))[-1]), 12: abs(3- self.port_speed.get((20,2))[-1]), 13: float('inf'), 14: float('inf'), 15 : float('inf'), 16: float('inf'), 17: float('inf'), 18 : float('inf'), 19 : float('inf'), 20 : 0},
           
           }
           # print(topobw)
 
-        
-                
- 
-    def add_flow(self, datapath, in_port, dst, actions):
-        ofproto = datapath.ofproto
-        parser = datapath.ofproto_parser
-        match = datapath.ofproto_parser.OFPMatch(
-            in_port=in_port, eth_dst=dst)
-        
-        inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS,
-                                             actions)] 
- 
-        mod = datapath.ofproto_parser.OFPFlowMod(
-            datapath=datapath, match=match, cookie=0,
-            command=ofproto.OFPFC_ADD, idle_timeout=0, hard_timeout=0,
-            priority=ofproto.OFP_DEFAULT_PRIORITY, instructions=inst)
-        datapath.send_msg(mod)
- 
-    def install_path(self, p, ev, src_mac, dst_mac):
+
+    def install_path(self, p, ev, src_mac, dst_mac, buffer_id=None):
        print("install_path is called")
        #print "p=", p, " src_mac=", src_mac, " dst_mac=", dst_mac
        msg = ev.msg
@@ -287,12 +270,19 @@ class ProjectController(app_manager.RyuApp):
        ofproto = datapath.ofproto
        parser = datapath.ofproto_parser
        for sw, in_port, out_port in p:
-         #print src_mac,"->", dst_mac, "via ", sw, " in_port=", in_port, " out_port=", out_port
+        print(src_mac,"->", dst_mac, "via ", sw, " in_port=", in_port, " out_port=", out_port)
         match=parser.OFPMatch(in_port=in_port, eth_src=src_mac, eth_dst=dst_mac)
         actions=[parser.OFPActionOutput(out_port)]
         datapath=self.datapath_list[int(sw)-1]
         inst = [parser.OFPInstructionActions(ofproto.OFPIT_APPLY_ACTIONS , actions)]
-        mod = datapath.ofproto_parser.OFPFlowMod( datapath=datapath, match=match, idle_timeout=10, hard_timeout=0,priority=1, instructions=inst)
+        if buffer_id:
+          mod = datapath.ofproto_parser.OFPFlowMod( 
+              datapath=datapath, buffer_id=buffer_id, match=match, idle_timeout=0, 
+              hard_timeout=5,priority=1, instructions=inst)
+        else:
+          mod = datapath.ofproto_parser.OFPFlowMod( 
+              datapath=datapath, match=match, idle_timeout=0, 
+              hard_timeout=5,priority=1, instructions=inst)
         datapath.send_msg(mod)
  
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures , CONFIG_DISPATCHER)
@@ -352,35 +342,35 @@ class ProjectController(app_manager.RyuApp):
 
         if dst in mymac.keys():
             p = get_path(mymac[src][0], mymac[dst][0], mymac[src][1], mymac[dst][1])
-            # print(p)
-            self.install_path(p, ev, src, dst)
-            out_port = p[0][2]
-            actions = [parser.OFPActionOutput(out_port)]
+            
+            if msg.buffer_id != ofproto.OFP_NO_BUFFER:
+              self.install_path(p, ev, src, dst, msg.buffer_id)
+            else:
+              self.install_path(p, ev, src, dst)
+            return
+            # out_port = p[0][2]
+            # actions = [parser.OFPActionOutput(out_port)]
             # print(out_port)
         else:
             # out_port = in_port
             out_port = ofproto.OFPP_FLOOD
+
             if self.k[src][dst_ip]<1000:
               self.k[src][dst_ip]+=1
               actions = [parser.OFPActionOutput(out_port)]
             else:
               actions = ''
+            
+            data=None
+            if msg.buffer_id==ofproto.OFP_NO_BUFFER:
+              data=msg.data
+ 
+            out = parser.OFPPacketOut(
+              datapath=datapath, buffer_id=msg.buffer_id, in_port=in_port,
+              actions=actions, data=data)
+            datapath.send_msg(out)
 
-       
-        # actions = [parser.OFPActionOutput(out_port)]
- 
-        # install a flow to avoid packet_in next time
-        if out_port != ofproto.OFPP_FLOOD:
-            match = parser.OFPMatch(in_port=in_port, eth_src=src, eth_dst=dst)
-       
-        data=None
-        if msg.buffer_id==ofproto.OFP_NO_BUFFER:
-           data=msg.data
- 
-        out = parser.OFPPacketOut(
-            datapath=datapath, buffer_id=msg.buffer_id, in_port=in_port,
-            actions=actions, data=data)
-        datapath.send_msg(out)
+        
     
     @set_ev_cls(event.EventSwitchEnter)
     def get_topology_data(self, ev):
@@ -388,7 +378,7 @@ class ProjectController(app_manager.RyuApp):
         switch_list = get_switch(self.topology_api_app, None)  
         switches=[switch.dp.id for switch in switch_list]
         self.datapath_list=[switch.dp for switch in switch_list]
-        #print "self.datapath_list=", self.datapath_list
+        # print("self.datapath_list=", self.datapath_list)
         print("switches=", switches)
  
         links_list = get_link(self.topology_api_app, None)
