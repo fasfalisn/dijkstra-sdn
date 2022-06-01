@@ -85,7 +85,7 @@ def minimum_distance(distance, Q):
  
 def get_path (src,dst,first_port,final_port):
   #Dijkstra's algorithm
-  print("get_path is called, src=",src," dst=",dst, " first_port=", first_port, " final_port=", final_port)
+  # print("get_path is called, src=",src," dst=",dst, " first_port=", first_port, " final_port=", final_port)
   distance = {}
   previous = {}
  
@@ -144,7 +144,7 @@ class ProjectController(app_manager.RyuApp):
         self.topology_api_app = self
         self.datapath_list=[]
         self.port_speed = {}    # record the port speed 
-        self.sleep = 5          # the interval of getting statistic
+        self.sleep = 0.5        # the interval of getting statistic
         self.state_len = 3      # the length of speed list of per port and flow.
         self.port_stats = {}
         self.datapaths = {}
@@ -270,7 +270,7 @@ class ProjectController(app_manager.RyuApp):
        ofproto = datapath.ofproto
        parser = datapath.ofproto_parser
        for sw, in_port, out_port in p:
-        print(src_mac,"->", dst_mac, "via ", sw, " in_port=", in_port, " out_port=", out_port)
+        # print(src_mac,"->", dst_mac, "via ", sw, " in_port=", in_port, " out_port=", out_port)
         match=parser.OFPMatch(in_port=in_port, eth_src=src_mac, eth_dst=dst_mac)
         actions=[parser.OFPActionOutput(out_port)]
         datapath=self.datapath_list[int(sw)-1]
